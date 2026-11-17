@@ -1,6 +1,6 @@
 from Intro.IntroPlayer import ClipHandler
 from Models.Display import Display
-from Text.TextWriter import TextWriter
+from UI.TextWriter import TextWriter
 from Colors.Color import Color
 import pygame
 

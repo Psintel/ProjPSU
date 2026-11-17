@@ -19,7 +19,7 @@ class Display:
             raise ValueError
 
         if value < 0 or value > 4096:
-            Logger.error("Text resolution is invalid")
+            Logger.error("UI resolution is invalid")
             raise ScreenError
 
         self.__width = value
@@ -38,7 +38,7 @@ class Display:
             raise ValueError
 
         if value < 0 or value > 2160:
-            Logger.error("Text resolution is invalid")
+            Logger.error("UI resolution is invalid")
             raise ScreenError
 
         self.__height = value

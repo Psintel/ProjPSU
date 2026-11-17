@@ -1,5 +1,5 @@
 from typing import Any
-from Text.TextWriter import TextWriter
+from UI.TextWriter import TextWriter
 import pygame
 import os
 from moviepy import VideoFileClip
@@ -7,7 +7,7 @@ from Logging.Logger import Logger
 import tempfile
 from Models.Display import Display
 import time
-from Settings.SkipKeys import Skip_keys
+from Settings.Settings import Settings
 from Colors.Color import Color
 
 class ClipHandler:
@@ -22,8 +22,9 @@ class ClipHandler:
         try:
             from moviepy import VideoFileClip
             return VideoFileClip(ClipHandler.path)
-        except Exception as e:
+        except Exception:
             Logger.error("Can't import intro video file")
+            return None
 
     @staticmethod
     def play_intro_clip(screen: pygame.Surface, display: Display) -> Any | None:
@@ -31,32 +32,34 @@ class ClipHandler:
             Logger.info(f"Intro was skipped: file {ClipHandler.path} was not found")
             return None
 
-        clip = ClipHandler.load_clip()
-
-        if clip is None:
-            return None
-
-        audio_file = ClipHandler.load_audio_from_clip(clip)
-
-        video_width, video_height = clip.size
-        k = min(display.width / video_width, display.height / video_height)
-        size = (int(video_width * k), int(video_height * k))
-        position = ((display.width - size[0]) // 2, (display.height - size[1]) // 2)
-
-        clock = pygame.time.Clock()
         keep_running = True
-        screen.fill((0, 0, 0))
-        if audio_file:
-            pygame.mixer.music.play()
-        start = time.perf_counter()
 
         try:
+            clip = ClipHandler.load_clip()
+
+            if clip is None:
+                return None
+
+            audio_file = ClipHandler.load_audio_from_clip(clip)
+
+            video_width, video_height = clip.size
+            k = min(display.width / video_width, display.height / video_height)
+            size = (int(video_width * k), int(video_height * k))
+            position = ((display.width - size[0]) // 2, (display.height - size[1]) // 2)
+
+            clock = pygame.time.Clock()
+
+            screen.fill((0, 0, 0))
+            if audio_file:
+                pygame.mixer.music.play()
+            start = time.perf_counter()
+
             playing = True
             while playing:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         keep_running = playing = False
-                    elif event.type == pygame.KEYDOWN and event.key in Skip_keys:
+                    elif event.type == pygame.KEYDOWN and event.key in Settings.skip_keys:
                         playing = False
                     elif event.type == pygame.MOUSEBUTTONDOWN:
                         playing = False
@@ -93,7 +96,7 @@ class ClipHandler:
     @staticmethod
     def load_audio_from_clip(clip):
         audio_file = None
-        if clip.auido is not None:
+        if clip.audio is not None:
             audio_file = os.path.join(tempfile.gettempdir(), "game_intro_audio.wav")
             clip.auido.write_audiofile(audio_file, logger=None)
             pygame.mixer.music.load(audio_file)
