@@ -7,11 +7,8 @@ class ScreenSettings:
     Width = 1920
     Height = 1080
     FPS = 60
-
-@dataclass
-class HudSettings:
     Hud_height = 120
-    Game_height = ScreenSettings.Height - Hud_height
+    Game_height = Height - Hud_height
     Half_of_game_height = Game_height // 2
 
 @dataclass
@@ -27,14 +24,29 @@ class Raycasting:
     Walls_height = 1000
 
 @dataclass
+class Items:
+    Names = {
+        'coal': 'Уголь',
+        'gauze': 'Марля',
+        'bottle': 'Бутылка'}
+
+@dataclass
+class Keys:
+    Names = {
+        'key_red': ('Красный ключ', (255, 90, 90)),
+        'key_blue': ('Синий ключ', (90, 140, 255)),
+    }
+
+@dataclass
 class Settings:
     screen: ScreenSettings
-    hud: HudSettings
     skip_keys: SkipKeys
     view: ViewDistance
     raycasting: Raycasting
+    items: Items
+    keys: Keys
 
-settings = Settings(ScreenSettings(), HudSettings(), SkipKeys(), ViewDistance(), Raycasting())
+settings = Settings(ScreenSettings(), SkipKeys(), ViewDistance(), Raycasting(), Items(), Keys())
 
 with open("settings.json", "w", encoding="utf-8") as file:
     json.dump(asdict(settings, file, indent=2))

@@ -1,6 +1,5 @@
 import pygame
 from Settings.Settings import settings
-from ScreenEffects.ShadeEffect import get_shade
 from Colors.Color import Color
 
 def create_background() -> pygame.Surface:
@@ -23,11 +22,6 @@ def create_background() -> pygame.Surface:
 
     return surface.convert()
 
-def draw_crosshair(screen: pygame.Surface) -> None:
-    chord_x, chord_y = settings.screen.Width // 2, settings.hud.Half_of_game_height
-    pygame.draw.line(screen, Color.White, (chord_x - 8, chord_x), (chord_x + 8, chord_y), 1)
-    pygame.draw.line(screen, Color.White, (chord_x, chord_y - 8), (chord_x, chord_y + 8), 1)
-
 def create_vingette() -> pygame.Surface:
     overlay = pygame.Surface((settings.screen.Width, settings.hud.Game_height), pygame.SRCALPHA)
     chord_x, chord_y = settings.screen.Width // 2, settings.hud.Half_of_game_height
@@ -37,13 +31,5 @@ def create_vingette() -> pygame.Surface:
         pygame.draw.circle(overlay, (0, 0, 0, alpha), (chord_x, chord_y), r)
     return overlay
 
-class Fade:
-    fade_surface = pygame.Surface(settings.screen.Width, settings.screen.Height)
-
-    @staticmethod
-    def draw_fade(screen: pygame.Surface, scale: float):
-        if scale > 0:
-            Fade.fade_surface.set_alpha(int(255 * min(scale, 1)))
-            screen.blit(Fade.fade_surface, (0, 0))
-
-
+def get_shade(depth):
+    return max(0, 1 - depth / settings.view.Distance) ** 1.5
