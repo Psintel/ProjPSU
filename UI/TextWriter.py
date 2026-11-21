@@ -5,13 +5,13 @@ from Errors.TextSizeError import TextSizeError
 from Logging.Logger import Logger
 from Models.Display import Display
 
-
 class TextWriter:
     font_cache: dict[tuple[int, bool], pygame.font.Font] = {}
     font_name: str = "arial"
 
     @classmethod
     def get_font(cls, text_size: int, bold: bool = False) -> pygame.font.Font:
+        pygame.init()
         key = (text_size, bold)
         if key not in cls.font_cache:
             cls.font_cache[key] = pygame.font.SysFont(cls.font_name, text_size, bold)
