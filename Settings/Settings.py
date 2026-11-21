@@ -38,6 +38,23 @@ class Keys:
     }
 
 @dataclass
+class Title:
+    Fade_time = 1.2
+    Pre_intro_messages = [
+        ["Идея игры вдохновлена", "предхеллоуинским видео от студентов ПГНИУ"],
+    ]
+    Message_hold_time = 4.0
+    Text = "СБЕГИ ИЗ ПГНИУ"
+    Lines = ["Тебе понадобится самодельный противогаз,", "чтобы выйти наружу."]
+    Hold_time = 5.0
+
+@dataclass
+class Door:
+    Animation_size = (420, 520)
+    Opening_time = 0.8
+    Fade_time = 0.4
+
+@dataclass
 class Settings:
     screen: ScreenSettings
     skip_keys: SkipKeys
@@ -45,8 +62,10 @@ class Settings:
     raycasting: Raycasting
     items: Items
     keys: Keys
+    title: Title
+    door: Door
 
-settings = Settings(ScreenSettings(), SkipKeys(), ViewDistance(), Raycasting(), Items(), Keys())
+settings = Settings(ScreenSettings(), SkipKeys(), ViewDistance(), Raycasting(), Items(), Keys(), Title(), Door())
 
 with open("settings.json", "w", encoding="utf-8") as file:
     json.dump(asdict(settings, file, indent=2))

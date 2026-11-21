@@ -22,7 +22,7 @@ def create_background() -> pygame.Surface:
 
     return surface.convert()
 
-def create_vingette() -> pygame.Surface:
+def create_vignette() -> pygame.Surface:
     overlay = pygame.Surface((settings.screen.Width, settings.hud.Game_height), pygame.SRCALPHA)
     chord_x, chord_y = settings.screen.Width // 2, settings.hud.Half_of_game_height
     max_r = int((settings.screen.Width ** 2 + settings.hud.Half_of_game_height ** 2) ** 0.5 / 2)
