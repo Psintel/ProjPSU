@@ -9,3 +9,4 @@ class Color(Enum):
     Floor_color = (65, 55, 45)
     Fading = (120, 120, 120)
     Blue = (150, 220, 255)
+    Red = (200, 40, 40)
