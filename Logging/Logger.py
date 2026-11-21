@@ -1,11 +1,14 @@
 import logging
 
+# Файл создаётся в текущей рабочей папке (gitignored). level=INFO, иначе все
+# Logger.info в проекте молча отбрасываются фильтром уровня.
 logging.basicConfig(
     filename="ProjPSU.log",
-    level=logging.ERROR,
+    level=logging.INFO,
     format="%(asctime)s -- %(levelname)s -- %(message)s",
-    encoding="urf-8"
+    encoding="utf-8",
 )
+
 
 class Logger:
     @staticmethod

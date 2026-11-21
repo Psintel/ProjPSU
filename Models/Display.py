@@ -1,10 +1,18 @@
+from Errors.ScreenError import ScreenError
 from Logging.Logger import Logger
-from Errors import ScreenError
+
 
 class Display:
+    """Размер окна. Валидация одна на ширину и высоту и работает в том числе при
+    создании: `__init__` идёт через сеттеры, а не пишет в приватные поля напрямую.
+
+    Назначение - только габарит экрана. Координаты текста сюда не кладём: для этого
+    есть обычный кортеж (x, y) у TextWriter.draw_text.
+    """
+
     def __init__(self, width: int, height: int) -> None:
-        self.__width = width
-        self.__height = height
+        self.width = width
+        self.height = height
 
     @property
     def width(self) -> int:
@@ -12,33 +20,26 @@ class Display:
 
     @width.setter
     def width(self, width: int) -> None:
-        try:
-            value = int(width)
-        except ValueError:
-            Logger.error(f"Invalid value {width}")
-            raise ValueError
-
-        if value < 0 or value > 4096:
-            Logger.error("UI resolution is invalid")
-            raise ScreenError
-
-        self.__width = value
-
+        self.__width = self.__validate(width, "Width", 4096)
 
     @property
     def height(self) -> int:
         return self.__height
 
     @height.setter
-    def height(self, height: int):
+    def height(self, height: int) -> None:
+        self.__height = self.__validate(height, "Height", 2160)
+
+    @staticmethod
+    def __validate(value, name: str, maximum: int) -> int:
         try:
-            value = int(height)
-        except ValueError:
-            Logger.error(f"Invalid value {height}")
-            raise ValueError
+            number = int(value)
+        except (TypeError, ValueError) as exc:
+            Logger.error(f"Display.{name}: not a number: {value!r}")
+            raise ValueError(f"Display.{name} must be an integer, got {value!r}") from exc
 
-        if value < 0 or value > 2160:
-            Logger.error("UI resolution is invalid")
-            raise ScreenError
+        if not 1 <= number <= maximum:
+            Logger.error(f"Display.{name}: out of range 1..{maximum}: {number}")
+            raise ScreenError(f"Display.{name}: out of range 1..{maximum}: {number}")
 
-        self.__height = value
+        return number
