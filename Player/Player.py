@@ -6,7 +6,6 @@ Player'у. Здесь только те поля, без которых не з�
 остаться должны как есть - на них завязан InventoryHandler.
 """
 
-
 class Player:
     def __init__(self, x: float = 0.0, y: float = 0.0, angle: float = 0.0) -> None:
         self.x = x
