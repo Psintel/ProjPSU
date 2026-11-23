@@ -1,6 +1,12 @@
+"""Точка входа.   Запуск:  python main.py
+
+Порядок: пролог (сообщения -> видео -> название) -> игра.
+Окно создаёт play_intro(); если игрок закрыл его на прологе, игру не запускаем.
+"""
 import pygame
-from GameManager.GameManager import play_intro
+
 from GameManager.game import Game
+from GameManager.GameManager import play_intro
 
 
 def main() -> None:
@@ -9,9 +15,7 @@ def main() -> None:
         return
 
     screen = pygame.display.get_surface()
-    game = Game(screen)
-    game.run()
-    pygame.quit()
+    Game(screen).run()
 
 
 if __name__ == "__main__":

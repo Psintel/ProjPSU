@@ -46,6 +46,33 @@ class ViewDistance:
 class Raycasting:
     Walls_height: int = 1000
 
+@dataclass
+class PlayerSettings:
+    Speed: float = 3.0                       # клеток в секунду
+    Rot_speed: float = 2.2                   # радиан в секунду
+    Radius: float = 0.2                      # радиус хитбокса
+
+@dataclass
+class Textures:
+    """Имена - контракт между рендером и остальными: стены берутся по Models.Tiles.TILE_TEXTURES,
+    предметы - по id из карты. 'key' - одна картинка, из неё красятся ключи из Keys.Names.
+    Нет файла - рисуется цветная заглушка (см. Assets/Assets.py)."""
+
+    Paths: dict = field(
+        default_factory=lambda: {
+            "wall": "textures/wall.png",                # стена
+            "door_red": "textures/door_red.png",        # красная дверь
+            "door_blue": "textures/door_blue.png",      # синяя дверь
+            "exit": "textures/exit.png",                # выход на улицу
+            "stairs": "textures/stairs.png",            # лестница (вниз и вверх)
+            "door_anim": "textures/door_anim.png",      # дверь для анимации перехода
+            "key": "textures/key.png",                  # ключ (светлый/серый, красится в цвет)
+            "coal": "textures/coal.png",
+            "gauze": "textures/gauze.png",
+            "bottle": "textures/bottle.png",
+        }
+    )
+    Item_size: tuple = (64, 64)              # предметы и ключи приводятся к этому размеру
 
 @dataclass
 class Items:
@@ -112,7 +139,8 @@ class Settings:
     title: Title = field(default_factory=Title)
     door: Door = field(default_factory=Door)
     clip: Clip = field(default_factory=Clip)
-
+    player: PlayerSettings = field(default_factory=PlayerSettings)   # [Человек 1]
+    textures: Textures = field(default_factory=Textures)
 
 settings = Settings()
 

@@ -1,6 +1,7 @@
 import math
 import pygame
 
+from Assets.AssetLoader import AssetLoader
 from InventoryHandler.InventoryHandler import InventoryHandler
 from Player.Player import Player
 from Settings.Settings import settings
